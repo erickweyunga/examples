@@ -1,5 +1,4 @@
 version: "3.9"
-
 services:
   whoami:
     image: traefik/whoami
@@ -8,17 +7,10 @@ services:
     deploy:
       labels:
         - "traefik.enable=true"
+        - "traefik.http.services.whoami.loadbalancer.server.port=80"
         - "traefik.http.routers.whoami.rule=Host(`whoami.cloud.erickweyunga.me`)"
-        - "traefik.http.routers.whoami.entrypoints=web"
-        # optional: for HTTPS
-        - "traefik.http.routers.whoami-secure.rule=Host(`whoami.cloud.erickweyunga.me`)"
-        - "traefik.http.routers.whoami-secure.entrypoints=websecure"
-        - "traefik.http.routers.whoami-secure.tls=true"
-        # optional: use the same service as HTTP
-        - "traefik.http.routers.whoami-secure.service=whoami"
-        # optional: redirect HTTP → HTTPS
-        - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
-        - "traefik.http.routers.whoami.middlewares=redirect-to-https"
+        - "traefik.http.routers.whoami.entrypoints=websecure"
+        - "traefik.http.routers.whoami.tls=true"
 
 networks:
   traefik-public:
